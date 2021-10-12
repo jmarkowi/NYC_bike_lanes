@@ -127,3 +127,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# MacOS metadata files
+*.DS_Store
+
+# Image dataset
+*.jpg
+*.jpeg
+
+# Saved Keras model files
+*.h5
