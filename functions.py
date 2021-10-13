@@ -10,9 +10,6 @@ def get_images(filepath, num_images=None):
     Given a filepath for a folder of images, return a list of those images
     as arrays of dtype=uint8.
     '''
-    # Delete metadata files created by Mac OS
-    !find . -name ".DS_Store" -delete
-
     # List of filenames
     filenames = os.listdir(filepath)
     # List of full filepaths to each image
@@ -30,9 +27,6 @@ def reorient_images(input_dir, output_dir):
     'Orientation' EXIF tag.
     Save new images in place.
     '''
-    # Delete metadata files created by Mac OS
-    !find . -name ".DS_Store" -delete
-    
     # List of filenames
     filenames = os.listdir(input_dir)
 
