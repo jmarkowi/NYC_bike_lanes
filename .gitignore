@@ -132,10 +132,13 @@ dmypy.json
 *.DS_Store
 
 # Image dataset
+other_images/
+input_images/
 *.jpg
 *.jpeg
 # Images saved in icloud
 *.icloud
 
 # Saved Keras model files
+models/
 *.h5
