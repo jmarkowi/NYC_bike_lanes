@@ -41,7 +41,7 @@ def reorient_images(input_dir, output_dir):
     
     return
 
-def visualize_results(results, model, train_gen, val_gen, pickle=True):
+def visualize_results(results, model, train_gen, val_gen):
     '''
     Plot the training and validation data from a trained model, given the results/history.
     Plot accuracy, recall, precision, and loss.
@@ -54,10 +54,6 @@ def visualize_results(results, model, train_gen, val_gen, pickle=True):
     '''
     # Training history
     history = results.history
-    
-    # Pickle results
-    if pickle:
-        dump(history, open(f'{model}_history.pkl', 'wb'))
     
     # Plot metrics
     fig, axs = plt.subplots(2, 2, figsize=(18, 12))
