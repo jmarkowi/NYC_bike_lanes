@@ -5,6 +5,7 @@ import matplotlib.image as mpimg
 from PIL import Image
 from PIL.ImageOps import exif_transpose
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from pickle import dump
 
 def get_images(filepath, num_images=None):
     '''
@@ -40,16 +41,23 @@ def reorient_images(input_dir, output_dir):
     
     return
 
-def visualize_results(results, model, train_gen, val_gen):
+def visualize_results(results, model, train_gen, val_gen, pickle=True):
     '''
     Plot the training and validation data from a trained model, given the results/history.
     Plot accuracy, recall, precision, and loss.
     
     If model and generators are provided, print evaluation of training and validation data
     and plot confusion matricies.
+    
+    If pickle=True, pickle the training history (dictionary) for later analysis and 
+    comparison.
     '''
     # Training history
     history = results.history
+    
+    # Pickle results
+    if pickle:
+        dump(history, open(f'{model}_history.pkl', 'wb'))
     
     # Plot metrics
     fig, axs = plt.subplots(2, 2, figsize=(18, 12))
