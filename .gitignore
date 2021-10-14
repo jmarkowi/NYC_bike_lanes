@@ -134,6 +134,8 @@ dmypy.json
 # Image dataset
 *.jpg
 *.jpeg
+# Images saved in icloud
+*.icloud
 
 # Saved Keras model files
 *.h5
