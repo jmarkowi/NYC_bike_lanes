@@ -7,6 +7,14 @@ from PIL.ImageOps import exif_transpose
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from pickle import dump
 
+import lime
+from lime import lime_image
+import keras
+from keras import models
+from keras.preprocessing.image import img_to_array, ImageDataGenerator
+import numpy as np
+from skimage.segmentation import mark_boundaries
+
 def get_images(filepath, num_images=None):
     '''
     Given a filepath for a folder of images, return a list of those images
@@ -108,3 +116,30 @@ def visualize_results(results, model, train_gen, val_gen):
                            display_labels=['Val_open_lane', 'Val_vehicle_lane']).plot();
         
     return results
+
+def show_explanation(generator, model, positive_only=False, hide_rest=False):
+    '''
+    Use Lime's `explainer.explain_instance` class and method to show
+    what the model is primarily using in the photo to make its classification
+    decision.
+    
+    Make sure that batch_size=1 in the generator.
+    '''
+    # Get an image from the generator
+    img, label = generator.next()
+    
+    explanation = explainer.explain_instance(np.squeeze(img).astype('double'), model.predict)
+    image, mask = explanation.get_image_and_mask(model.predict(img).argmax(axis=1)[0], 
+                                             positive_only=positive_only, hide_rest=hide_rest)
+    
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 8))
+    ax1.set_title('Original image')
+    ax1.imshow(np.squeeze(img))
+    
+    ax2.set_title('Masked image')
+    ax2.imshow(mark_boundaries(image, mask))
+    
+    print('Predicted class:', np.round(model.predict(img)))
+    print('Actual class:', label)
+    
+    return
