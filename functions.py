@@ -117,17 +117,53 @@ def visualize_results(results, model, train_gen, val_gen):
         
     return results
 
-def show_explanation(generator, model, positive_only=False, hide_rest=False):
+def show_explanation(generator=None, model=None, img=None, label=None, positive_only=False, hide_rest=False):
     '''
     Use Lime's `explainer.explain_instance` class and method to show
-    what the model is primarily using in the photo to make its classification
-    decision.
+    what areas/features a model is primarily attending to in an image 
+    in order to make its classification decision.
     
-    Make sure that batch_size=1 in the generator.
+    Prints actual image class according to dataset and predicted class
+    according to model.predict.
+    
+    Plots original image (or possibly augmented image if generator is used 
+    that includes image augmentation) on tge left and image with lime 
+    explainer mask on the right.
+    
+    Pass in either a generator OR single img and label.
+    
+    Parameters:
+        generator = instantiated ImageDataGenerator object with 
+                    .flow_from_directory() or other similar method already
+                    such that it is ready to generate an image
+                    (None if img and label are used instead)
+        model = trained NN or CNN model
+        img = single image tensor; shape must match input_shape of model's
+              input layer 
+              (None if generator is used instead)
+        label = int or float to represent ground truth image class
+                (None if generator is used instead)
+        positive_only = True will only show regions contributing positively
+                        to the model's prediction (in green).
+                        False (default) will also show regions contributing
+                        toward competing class (in red).
+        hide_rest = True will black out the image outside of the contribution
+                    regions.
+                    False (default) will display entire image, using a yellow
+                    outline to denote contribution regions.
     '''
     # Get an image from the generator
-    img, label = generator.next()
+    if generator is not None:
+        img, label = generator.next()
+        img = img[0]
+    # If img and label instead of generator
+    if img is not None and label is not None:
+        img, label = img, label
+        img = np.expand_dims(img, axis=0)
     
+    model = model
+    
+    explainer = lime_image.LimeImageExplainer()
     explanation = explainer.explain_instance(np.squeeze(img).astype('double'), model.predict)
     image, mask = explanation.get_image_and_mask(model.predict(img).argmax(axis=1)[0], 
                                              positive_only=positive_only, hide_rest=hide_rest)
@@ -141,5 +177,7 @@ def show_explanation(generator, model, positive_only=False, hide_rest=False):
     
     print('Predicted class:', np.round(model.predict(img)))
     print('Actual class:', label)
+    
+    plt.show()
     
     return
