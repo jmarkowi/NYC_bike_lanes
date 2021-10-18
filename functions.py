@@ -32,10 +32,11 @@ def get_images(filepath, num_images=None):
     
 def reorient_images(input_dir, output_dir):
     '''
-    Given a filepath for a folder of images, iterate over all images
-    in the folder and re-orient them by adjusting according to 
-    'Orientation' EXIF tag.
-    Save new images in place.
+    Given a filepath for a folder of images (input_dir), 
+    iterate over all imagesin the folder and re-orient 
+    them by adjusting according to 'Orientation' EXIF tag.
+    
+    Save new images (copies of old) in output_dir.
     '''
     # List of filenames
     filenames = os.listdir(input_dir)
@@ -120,7 +121,7 @@ def visualize_results(results, model, train_gen, val_gen):
 def show_explanation(generator=None, model=None, img=None, label=None, positive_only=False, hide_rest=False):
     '''
     Use Lime's `explainer.explain_instance` class and method to show
-    what areas/features a model is primarily attending to in an image 
+    what areas/features a model is primarily attending to in one image 
     in order to make its classification decision.
     
     Prints actual image class according to dataset and predicted class
@@ -175,7 +176,7 @@ def show_explanation(generator=None, model=None, img=None, label=None, positive_
     ax2.set_title('Masked image')
     ax2.imshow(mark_boundaries(image, mask))
     
-    print('Predicted class:', np.round(model.predict(img)))
+    print('Predicted class:', np.round(model.predict(img))[0])
     print('Actual class:', label)
     
     plt.show()
