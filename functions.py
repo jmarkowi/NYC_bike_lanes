@@ -118,7 +118,13 @@ def visualize_results(results, model, train_gen, val_gen):
         
     return results
 
-def show_explanation(generator=None, model=None, img=None, label=None, positive_only=False, hide_rest=False):
+def show_explanation(generator=None, 
+                     model=None, 
+                     img=None, 
+                     label=None, 
+                     num_imgs=0, 
+                     positive_only=False, 
+                     hide_rest=False):
     '''
     Use Lime's `explainer.explain_instance` class and method to show
     what areas/features a model is primarily attending to in one image 
@@ -157,6 +163,7 @@ def show_explanation(generator=None, model=None, img=None, label=None, positive_
     if generator is not None:
         img, label = generator.next()
         img = img[0]
+        label = label[0]
     # If img and label instead of generator
     if img is not None and label is not None:
         img, label = img, label
