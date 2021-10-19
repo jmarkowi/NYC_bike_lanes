@@ -7,13 +7,13 @@
 
 ## The Problem
 
-![a scene often seen in NYC](readme_images/cab_in_bikelane.jpeg)
+![a scene often seen in NYC](readme_images/cab_in_bikelane.png)
 
 Biking is my primary mode of transportation around New York City, as it is for an increasing number of people every year. Although NYC's bike infrastructure rivals that of other cities in the country, crashes and fatalities still occur, and "nearly two-thirds of those who do not bike cite safety concerns as their main reason for not riding more often or at all." [source](https://rpa.org/work/reports/the-five-borough-bikeway) Clearly there is room to grow when it comes to making cycling in NYC safe and accessible to all. A major safety concern, and the focus of this project, is the high number of cars parked in designated bike lanes. [One study from Hunter College in 2019](http://www.hunter.cuny.edu/communications/repository/files/Bike%20Lanes%20or%20Blocked%20Lanes%20Study.pdf/) found an average of 11.5 blockages per mile of bike lane. On conventional bike lanes, the single greatest cause of these blockages was vehicular obstruction. A blocked bike lane means that cyclists are forced to weave in and out of traffic, creating a significant risk to their safety.
 
 In my own experience biking hundreds of miles per year in the city, not a single trip goes by in which I am not forced to leave the bike lane because it is blocked by a vehicle. Most often, the vehicle is a Taxi and Limousine Commission (T&LC) car (yellow and green cabs, as well as rideshare vehicles for Uber, Lyft, etc.), a delivery truck, or a police car. And the problem seems to be getting worse, even as more bike lanes are added and more people ride in NYC, and there seems to be little interest in enforcement. **Insufficient enforcement of bike lane traffic laws creates serious safety issues for cyclists.**
 
-![yet another cop in the bike lane](readme_images/blocked_bike_lane_nj_port_authority.jpeg)
+![yet another cop in the bike lane](readme_images/blocked_bike_lane_nj_port_authority.png)
 
 
 ## Business Understanding
