@@ -7,7 +7,7 @@
 
 ## The Problem
 
-![a scene often seen in NYC](readme_images/cab_in_bikelane.jpg)
+![a scene often seen in NYC](readme_images/cab_in_bikelane.jpeg)
 
 Biking is my primary mode of transportation around New York City, as it is for an increasing number of people every year. Although NYC's bike infrastructure rivals that of other cities in the country, crashes and fatalities still occur, and "nearly two-thirds of those who do not bike cite safety concerns as their main reason for not riding more often or at all." [source](https://rpa.org/work/reports/the-five-borough-bikeway) Clearly there is room to grow when it comes to making cycling in NYC safe and accessible to all. A major safety concern, and the focus of this project, is the high number of cars parked in designated bike lanes. [One study from Hunter College in 2019](http://www.hunter.cuny.edu/communications/repository/files/Bike%20Lanes%20or%20Blocked%20Lanes%20Study.pdf/) found an average of 11.5 blockages per mile of bike lane. On conventional bike lanes, the single greatest cause of these blockages was vehicular obstruction. A blocked bike lane means that cyclists are forced to weave in and out of traffic, creating a significant risk to their safety.
 
