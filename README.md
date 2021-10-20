@@ -37,10 +37,97 @@ Last year [at a press conference](https://www.masstransitmag.com/bus/vehicles/pr
 
 ## Purpose of Analysis
 
+The goal of this project is to take a necessary step toward automating enforcement by building and training a model to identify when a car is parked in a bike lane. The scope of this project is limited to train a model to recognize when a vehicle is obstructing a bike lane, given that the images used for training and evaluation are guaranteed to contain a bike lane. This scope is based on the idea of an automated enforcement system comprised of stationary cameras placed on streets with bike lanes. The cameras would point up or down the street in order to monitor as much of the length of the bike lane as possible. The image below shows a speed camera used in the city, but illustrates this idea.
+
+![speed camera](readme_images/speed_camera.png)
+
+Models are evaluated using accuracy and precision (the true-positive rate), as well as an inspection of model decision-making using the [Lime](https://github.com/marcotcr/lime) package. Precision is used to ensure that false-positives are kept to a minimum. 
 
 
 ## Data & Methods
 
+The dataset consists of just over 1,800 images of New York City bike lanes, up from about 1,600 at the beginning of the project. Just over half of these images are of a bike lane obstructed by a vehicle, which comprises the target class. The rest of the images are of bike lanes without vehicular obstruction, showing entirely empty bike lanes or, on occassion, bike lanes with cyclists or pedestrians. The small size of the dataset is one of the most significant limitations of this project.
+
+The images in the dataset were collected from a variety of sources:
+ - The [Reported app's Twitter page](https://twitter.com/Reported_NYC), which tweets all traffic violations reported through the app
+ - A large dataset of images provided by [Ryan Gravener](https://github.com/snooplsm), who is working on an image recognition project for Reported
+ - Screenshots from Google Maps Street View
+ - Manual collection (i.e., taking photos while biking around the city--this is the source of the vast majority of the non-target images of unobstructed bike lanes)
+ 
+### Preprocessing
+
+Several steps were taken to prepare images for modeling. First, images collected manually (taken with a smartphone camera) had to be reoriented to ensure they were being fed into the model correctly.
+
+![unoriented images](readme_images/unoriented_images.png)
+![oriented images](readme_images/oriented_images.png)
+
+Next, some images had to be cropped. Many images collected via Reported contain timestamps printed at the top of the image, which enhances the photo's value as evidence in a potential hearing. However, this creates a potentially confounding factor in the dataset because images with timestamps will be overrepresented in the target class. Without removing this feature, it's possible that the model will use it to predict the target class, rather than attending to real features in the image.
+
+![uncropped images](readme_images/uncropped_images.png)
+![cropped images](readme_images/cropped_images.png)
+
+Many images were deemed unsuitable for training and were removed entirely from the dataset. Images were generally removed that:
+ - did not show both lane lines of a bike lane (lines too faint or photo taken too "close up" to a vehicle)
+ - showed a bike lane from the side (photo was taken from across the street, facing across the street or toward the sidewalk)
+ - contained too many cyclists, motorbikes, or pedestrians such that the bike lane was significantly obstructed
+ - were taken at night (these were extremely overrepresented in the target class)
+ - showed a car crossing a bike lane legally (i.e., crossing an intersection) or parked in a legally ambiguous zone
+ - were ambiguous (such as showing a potential vehicular obstruction too far in the distance to tell for sure)
+ 
+The following are a small set of representative examples of the over 200 images that were ultimately removed from the orginal dataset:
+
+![examples of unused images](readme_images/examples_unused.png)
+
+Many of these decisions were subjective judgments and there were a surprisingly large number of images that were ambiguous. These images were kept in a separate `unused_images` folder for later inclusion or testing and as non-examples. 
+
+Because the dataset is also limited, it was thought best to restrict the data to only the clearest examples that match the intended use with an automated enforcement system and scope of the project. The hope is that with more data and continued model training, a model can be created that also recognizes pedestrians or cyclists as well.
+
+Finally, the image set was split into a training and holdout testing set. Later, more images were added to the corpus and another split was made for validation purposes. This resulted in the following file structure for fully processed images:
+
+This resulted in the following file structure for processed images:
+
+```
+└── input_images
+    ├── full_combined
+    ├── new
+    ├── test
+    ├── train
+    └── validation
+```
+Each folder of images contains 2 subfolders to designate image classes, as shown below with one example:
+```
+└── input_images
+    ├── full_combined
+    │    ├──open_bike_lane
+    │    └──vehicle_bike_lane
+```
+
+### EDA
+
+Both the validation and holdout test sets contain an even 50/50 split of image classes (50 images of each). Effort was made during data collection to keep the class balance in the training set as even as possible. Although there are slightly more target class images, this imbalance was not considered large enough to be a serious issue.
+
+![class distribution](readme_images/class_distrib.png)
+
+Below are samples of a few images from each class.
+
+![open bike lane images](readme_images/open_images.png)
+![vehicle obstructed bike lane images](readme_images/target_images.png)
+
+The hope is that a neural network, and especially the pattern-detecting filters in a convolutional neural network, will be able to detect the lane lines and vehicle shapes in the images. The images are so consistent in content and perspective and similar both within and between the classes except for the main feature (a vehicle in the bike lane). Because of this, it seems reasonable that a model can predict the classes with high accuracy, even with a small dataset.
+
+### Modeling
+
+Over 20 models were trained on the data, starting with simple fully connected dense neural networks, progressing through convolutional neural networks, and finally ending with transfer learning models. These powerful models are built using state-of-the-art pre-trained models as a base, such as VGG-16 and InceptionV3. These models have been trained on the [ImageNet dataset](https://www.image-net.org/), a set of over 14 million images labeled and classified into 1,000 categories.
+
+Although this project is a simple binary classification project, the idea is that these models, which are comprised of dozens of convolutional layers, have learned to recognize many, many simple and complex patterns. By using not only their architecture, but also the pre-tuned weights and hyperparameters for each layer, it's possible to harness that knowledge and apply it to a new task.
+
+The following is a diagram showing the structure of the VGG-16 model. The three Dense layers were removed, then new Dense layers added on to apply the pre-trained model to this classification task:
+
+![vgg16 architecture](readme_images/vgg16.png)
+
+Image augmentation helped both to avoid overfitting and to artificially increase the size of the dataset. Image augmentation through the Keras `ImageDataGenerator` is performed randomly and on the fly. This allows the model to train on a variety of images beyond just those in the dataset. It's important to use parameters that the model is likely to see. These parameters were chosen to account for images from either side of the street, in a variety of lighting conditions, spotting a variety of vehicles in the bike lane at a variety of distances from the camera and locations in the frame. Examples of augmentations performed on a single target class image are shown below:
+
+![augmented images](readme_images/image_augmentation.png)
 
 ## Results
 
