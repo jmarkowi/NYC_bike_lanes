@@ -174,8 +174,7 @@ def visualize_results(results, model, train_gen, val_gen):
 def show_explanation(generator=None, 
                      model=None, 
                      img=None, 
-                     label=None, 
-                     num_imgs=0, 
+                     label=None,
                      positive_only=False, 
                      hide_rest=False):
     '''
