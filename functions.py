@@ -111,8 +111,12 @@ def visualize_results(results, model, train_gen, val_gen):
     comparison.
     '''
     # Training history
-    history = results.history
-    
+    try: 
+        history = results.history
+    # For reloaded pickled history
+    except:
+        history = results
+        
     # Plot metrics
     fig, axs = plt.subplots(2, 2, figsize=(18, 12))
     fig.suptitle('Training Results', fontsize=15)
@@ -165,7 +169,7 @@ def visualize_results(results, model, train_gen, val_gen):
     ConfusionMatrixDisplay(confusion_matrix(val_gen.labels, y_val_preds),
                            display_labels=['Val_open_lane', 'Val_vehicle_lane']).plot();
         
-    return results
+    return
 
 def show_explanation(generator=None, 
                      model=None, 
