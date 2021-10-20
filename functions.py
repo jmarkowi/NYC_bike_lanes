@@ -50,6 +50,55 @@ def reorient_images(input_dir, output_dir):
     
     return
 
+def crop_image(dir_, filename, left=0, top=175, right=None, bottom=None):
+    '''
+    Given a directory and filename, open an image
+    and return a cropped version of the image.
+    '''
+    # Get image
+    img_filepath = os.path.join(dir_, filename)
+    img = Image.open(img_filepath)
+
+    # Get image dims
+    width, height = img.size
+    
+    # Designate dims of area to keep
+    left = left
+    top = top
+    if right == None:
+        right = width
+    if bottom == None:
+        bottom = height
+
+    box = (left, top, right, bottom)
+
+    # Return the cropped image
+    cropped_img = img.crop(box) 
+    return cropped_img
+
+def batch_crop_images(input_dir, output_dir):
+    '''
+    Run `crop_image()` on all files in input_dir,
+    saving the results to output_dir.
+    '''
+    # Track number of images
+    count = 0
+    
+    # Get list of filenames
+    filenames = os.listdir(input_dir)
+    
+    # Crop each image
+    for file in filenames:
+        cropped_img = crop_image(input_dir, file)
+        # Save the cropped image
+        new_filename = os.path.join(output_dir, f'cropped_{file}')
+        cropped_img.save(new_filename)
+        count += 1
+    
+    print(f'{count} images cropped and saved.')
+    
+    return
+
 def visualize_results(results, model, train_gen, val_gen):
     '''
     Plot the training and validation data from a trained model, given the results/history.
