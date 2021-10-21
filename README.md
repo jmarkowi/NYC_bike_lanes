@@ -160,7 +160,7 @@ To improve the model, the best and most important next step is to collect more d
 
 ## For More Information
 
-See the full analysis in the [Jupyter Notebook](./NYC_bike_lanes.ipynb) or review this [presentation](./NYC_bike_lanes_presentation.pdf)
+See the full analysis in the [Jupyter Notebook](NYC_bike_lanes.ipynb) or review this [presentation](NYC_bike_lanes_presentation.pdf)
 
 ### Structure of Repository:
 
