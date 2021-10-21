@@ -165,7 +165,7 @@ See the full analysis in the [Jupyter Notebook](./NYC_bike_lanes.ipynb) or revie
 ### Structure of Repository:
 
 ```
-├── working_nbs (working notebooks, named by stage of project)
+├── code (working notebooks, named by stage of project)
 ├── input_images (dataset used in training models)
 ├── models (saved .h5 files of trained models and pickled training histories)
 ├── other images (unused and not fully processed images)
