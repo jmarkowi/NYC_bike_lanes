@@ -1,0 +1,169 @@
+Model Name,Type,Val_split,Structure,Optimizer,Epochs,Time to train/fit,Training loss,Training acuracy,Training recall,Training precision,Val loss,Val accuracy,Val recall,Val precision,Other notes
+fsm (first simple model) ,Fully connected dense NN,0.2,"Flatten()
+Dense(32, relu)
+Dense(1, sigmoid)",sgd,30,1:03:48,0.4472,0.7631,0.7741,0.7606,0.7961,0.7063,0.8898,0.6532,"Somewhat spiky val data, although smoother on loss"
+nn_model_1,Fully connected dense NN,0.2,"Flatten()
+Dense(512, relu)
+Dense(64, relu)
+Dense(32, relu)
+Dense(12, relu)
+Dense(1, sigmoid)",sgd,20,0:46:33,0.4355,0.7830,0.6365,0.9050,0.5305,0.7341,0.7244,0.7419,Very spiky val data on all measures! Conf matrix shows improvement—balance between recall/precision
+nn_model_2,Fully connected dense NN with image augmentation,0.1,"Flatten()
+Dense(512, relu)
+Dense(64, relu)
+Dense(32, relu)
+Dense(12, relu)
+Dense(1, sigmoid)",sgd,20,0:52:36,0.6016,0.6623,0.3916,0.8643,0.5794,0.7037,0.5147,0.8333,"Augmentations used: horizontal_flip=True, rotation_range=30, width_shift_range=.1, height_shift_range=.1, brightness_range=[0.5, 1.5], zoom_range=.2"
+nn_model_3,Fully connected dense NN with image augmentation,0.1,"Flatten()
+Dense(512, relu)
+Dense(64, relu)
+Dense(32, relu)
+Dense(12, relu)
+Dense(1, sigmoid)",Adam,20,0:49:21,0.5296,0.7145,0.9854,0.6411,0.9084,0.6074,0.9706,0.5641,"Augmentations used:
+horizontal_flip=True
+brightness_range=[0.6, 1.4]
+
+Seems like overfit after epochs 12-14?"
+cnn_model_1,Convolutional NN,0.1,"Conv2D(32, (3, 3))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3))
+MaxPooling2D(2, 2)
+Conv2D(128, (3, 3))
+MaxPooling2D(2, 2)
+Conv2D(128, (3, 3))
+MaxPooling2D(2, 2)
+Flatten()
+Dense(512)
+Dense(1)",Adam,15,0:42:57,0.0038,1.0000,1.0000,1.0000,0.5721,0.9407,0.9706,0.9167,"No image aug, just straight vanilla CNN using architecture from Canvas lab.
+
+Way overfit"
+cnn_model_2,Convolutional NN with image aug,0.1,"Conv2D(32, (3, 3))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3))
+MaxPooling2D(2, 2)
+Conv2D(128, (3, 3))
+MaxPooling2D(2, 2)
+Conv2D(128, (3, 3))
+MaxPooling2D(2, 2)
+Flatten()
+Dense(512)
+Dense(1)",Adam,15,0:48:18,0.2848,0.8793,0.7816,0.9738,0.1796,0.9407,0.9118,0.9688,"Augs used:
+horizontal_flip=True
+rotation_range=20
+brightness_range=[0.5, 1.5]
+zoom_range=0.2
+
+I think I mis-ran it the first time (used wrong generators), so re-trained from scratch. Val metrics consistently higher than training, which is odd. Spiking a little, but overall less. Definitely an improvement; the lower training scores are actually welcome as far as being overfit goes."
+cnn_model_3,Convolutional NN with BatchNormalization layers,0.1,"Conv2D(32, (3, 3))
+BatchNormalization()
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3))
+BatchNormalization()
+MaxPooling2D(2, 2)
+Conv2D(128, (3, 3))
+BatchNormalization()
+MaxPooling2D(2, 2)
+Flatten()
+Dense(512)
+Dense(1)",Adam,15,0:53:17,0.4881,0.8181,0.6683,0.9582,0.7442,0.8593,0.8088,0.9016,"Same augs used as above.
+
+Big split between training and val for first few epochs, then seemed to converge. May benefit from further training?"
+cnn_model_4,Convolutional NN with l2 regularization,0.1,"Conv2D(32, (3, 3))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3), l2(0.01))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3), l2(0.01))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3), l2(0.01))
+MaxPooling2D(2, 2)
+Flatten()
+Dense(512)
+Dense(1)",Adam,15,0:47:10,0.3436,0.8711,0.7912,0.9440,0.2513,0.9407,0.9118,0.9688,"Slightly more loss, but same val metrics as cnn_model_2, interestingly enough. Plus cnn_model_2’s training metrics are actually better…Seems as though perhaps l2 isn’t doing that much here?"
+cnn_model_5,Convolutional NN with dropout layers,0.1,"Conv2D(32, (3, 3))
+MaxPooling2D(2, 2)
+Conv2D(32, (3, 3))
+MaxPooling2D(2, 2)
+Conv2D(32, (3, 3))
+MaxPooling2D(2, 2)
+Flatten()
+Dense(64)
+Dropout(0.5)
+Dense(1)",Adam,15,0:51:10,0.3011,0.8679,0.8803,0.8608,0.2650,0.9037,0.9706,0.8571,Taking some advice from https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html and basing this architecture off what they did. Next steps are definitely going to be transfer learning off a pre-trained ImageNet model or something.
+cnn_model_4_new_data,Continue training cnn_model_4 w/new data,0.1,"Conv2D(32, (3, 3))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3), l2(0.01))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3), l2(0.01))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3), l2(0.01))
+MaxPooling2D(2, 2)
+Flatten()
+Dense(512)
+Dense(1)",Adam(lr=0.0001),15,0:16:12,0.4121,0.8111,0.8057,0.8393,0.2965,0.9143,1.0000,0.8636,"Not sure if I totally did this right. Was I supposed to just train on the new data, then validate on a separate batch? Perhaps I should have set aside a folder for validation data rather than doing it via ImageDataGenerator’s validation_split…"
+cnn_model_4_combined_data,Continue training cnn_model_4 w/full dataset (combo new and old),0.1,"Conv2D(32, (3, 3))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3), l2(0.01))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3), l2(0.01))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3), l2(0.01))
+MaxPooling2D(2, 2)
+Flatten()
+Dense(512)
+Dense(1)",Adam(lr=0.0001),15,1:25:09,0.3354,0.8656,0.8472,0.8852,0.2492,0.9298,0.9545,0.9130,"Validation scores much better than training scores—like weirdly higher. Although val_precision took a huge nosedive at the very end, according to the visualizations. Interesting that it’s doing worse than the original model."
+cnn_model_4_retrain_full,Re-train cnn_model_4 from scratch (re-instantiate w/same architecture) with full dataset,0.1,"Conv2D(32, (3, 3))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3), l2(0.01))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3), l2(0.01))
+MaxPooling2D(2, 2)
+Conv2D(64, (3, 3), l2(0.01))
+MaxPooling2D(2, 2)
+Flatten()
+Dense(512)
+Dense(1)",Adam,15,1:22:09,0.3651,0.8514,0.8005,0.8980,0.2926,0.9006,0.9091,0.8989,"Once again, validation scores beat training scores. Artifact of small dataset? Worse scores than on original cnn_model_4, but perhaps chance or perhaps b/c more variety w/new data? Possibly means less overfitting."
+vgg_transfer_model,Transfer learning w/VGG-16 as base,0.1,"VGG-16 layers thru Block5 (frozen)
+Dense(512)
+Dense(1)",Adam,20,1:52:47,0.2901,0.8876,0.7828,0.9968,0.2772,0.9064,0.8523,0.9615,"Seems promising! Metrics are better for training, comparable to my last CNN model for validation, but don’t seem to be overfit. Also trained on full dataset (new and old data), so not exactly the same training dataset as before—does make it difficult to compare. 
+
+Exploring with Lime led to…confusing and inconclusive results. It highlighted in the opposite color from what would be expected, and also reported a “Predicted Class” as “3.0”, which makes no sense. Clearly something is wrong with my Lime function, lime itself, or the model."
+incep_transfer_model,Transfer learning w/InceptionV3 as base,0.1,"InceptionV3 w/out top (frozen)
+Dense(512)
+Dense(1)",Adam,20,1:44:14,0.1073,0.9522,0.9457,0.9603,0.2390,0.9357,0.9432,0.9326,"This one looks pretty great and not really overfit. False positives and negatives are equal in val confusion matrix though, whereas w/VGG-16 precision was higher than recall."
+resnet_transfer_model,Transfer learning w/ResNet50 as base,0.1,"ResNet50 frozen w/out top
+Dense(512)
+Dense(1)",Adam,20,1:51:36,0.4716,0.7681,0.7614,0.7801,0.4016,0.8426,0.8750,0.8021,"Woof, definitely not this one!!! Poor metrics make it an easier choice for sure to eliminate ResNet50."
+vgg_1,Transfer learning w/VGG-16 as base,50 of ea class,"VGG-16 layers thru Block5 (frozen)
+Dense(512)
+Dense(512)
+Dense(1)",Adam,20,1:46:31,0.2027,0.9172,0.9721,0.8838,0.1888,0.9200,0.9200,0.9200,"Lowered the validation set for additional training after splitting validation into its own folders. No longer augmenting validation data! Also corrected a few mis-labeled images. So far this is still not fully beating cnn_model_4 on val metrics, but that model was likely way overfit and this one is far, far less so. That means it will likely do better on unseen data."
+vgg_2,Transfer learning w/VGG-16 as base,50 of ea class,"VGG-16 layers thru Block5 (frozen)
+Dense(512)
+Dropout(0.5)
+Dense(512)
+Dropout(0.5)
+Dense(1)",Adam,20,"2:37:40
+
+(Trained simultaneously with incep_2)",0.3434,0.8833,0.8049,0.9706,0.2698,0.9000,0.8600,0.9348,"A slight improvement on recall with the validation set. Interesting that the val metrics did not drop much but the training metrics did significantly, although that tracks with the goal of using dropout to reduce overfitting."
+vgg_3,Transfer learning w/VGG-16 as base,50 of ea class,"VGG-16 layers thru Block5 (frozen)
+Dense(512)
+Dense(128)
+Dense(32)
+Dense(1)",Adam,20,2:24:00,0.1769,0.9265,0.8780,0.9818,0.2338,0.9400,0.8800,1.000,"The (unrealistically) high val precision of this model reflects the high precision of the original vgg_transfer_model I tested before. Although recall is somewhat low, this is still an improvement over that prior model. Since precision is more important than just overall accuracy, it seems that a VGG-16-based model is the way to go here."
+incep_1,Transfer learning w/InceptionV3 as base,50 of ea class,"InceptionV3 w/out top (frozen)
+Dense(512)
+Dense(512)
+Dense(1)",Adam,20,1:16:39,0.2104,0.9092,0.9663,0.878,0.1752,0.9100,0.9400,0.8868,"Wow, the InceptionV3 models are significantly faster than VGG-16 by up to over a minute per epoch!"
+incep_2,Transfer learning w/InceptionV3 as base,50 of ea class,"InceptionV3 w/out top (frozen)
+Dense(512)
+Dropout(0.5)
+Dense(512)
+Dropout(0.5)
+Dense(1)",Adam,20,"2:21:56
+
+(Trained simultaneously with vgg_2)",0.3247,0.8382,0.7247,0.9615,0.3156,0.8700,0.7400,1.0000,"Definitely worse metrics, but perhaps that means it’s not as overfit? Back to the same issue of significantly better val than training metrics. This one is not the winner."
+incep_3,Transfer learning w/InceptionV3 as base,50 of ea class,"InceptionV3 w/out top (frozen)
+Dense(512)
+Dense(128)
+Dense(32)
+Dense(1)",Adam,20,2:07:29,0.1364,0.9463,0.9268,0.9708,0.1472,0.9300,0.9000,0.9574,"This is absolutely an improvement over incep_1, but it seems to be about the same if not somewhat worse than incep_transfer_model. Comparable to vgg_3; difficult to judge because of small validation set size."
