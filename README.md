@@ -131,14 +131,32 @@ Image augmentation helped both to avoid overfitting and to artificially increase
 
 ## Results
 
+The final best model chosen for the task has as its base the VGG-16 pre-trained model architecture, topped with several fully connected dense layers. On a validation set, it performed with 94% accuracy and 100% precision, although as the validation set contained only 100 images, these metrics were unlikely to remain high on previously unseen data. Sure enough, on the holdout test set, also only 100 images, the model predicted with only 91% accuracy and 91% precision. It is possible that the model is still overfit to the data and would benefit from more regularization strategies, such as l2 regularization or dropout layers. When these techniques were tried on their own, they caused a drop across all metrics, but this could be desireable if it means more consistency in the long run on new images.
+
+![final confusion matrix](readme_images/final_conf_matrix.png)
+
+Performing above 90% is a great start for a small dataset. I am confident that increasing the size of the dataset to at least 1,000 images per class, as well as trying out more strategies and iterations on the transfer learning model, will result in improved performance on unseen data. Casual testing on nighttime images, which were not used in training, resulted in over 80% accuracy overall and 97% precision on an imbalanced dataset (heavily in favor of the target class). This suggests that the model is generalizable and supports the idea that more training on more data will help it. 
+
+Ultimately, the use case stated for this model would allow for continued training and improvement over time as more images are collected.
+
 
 ## Conclusion
 
 ### Recommendations
 
+New York City needs automated bike lane enforcement. The bike lanes are too often treated as free parking for the city's drivers, especially by delivery vehicles, taxis, and police vehicles. This causes dangerous conditions for the ever-increasing number of cyclists on the streets who depend on bike lanes to provide a safer corridor, free from traffic. When vehicles are stopped in the bike lane, it forces cyclists to merge into traffic and weave around cars, putting them at risk of fatal injury.
+
+Automated enforcement would increase the efficiency and consistenty of ticketing, as well as reduce the need for police to physically engage with drivers. This would save time and human resources, and likely save money as well. I recommend starting with stationary cameras, pointing down bike lanes on longer, straight streets that are largely free from other obstructions. Historic data from Reported could be used to identify and locate especially problematic areas in which bike lanes are consistently clogged. (I can think of a half a dozen locations around the city that have bike lanes I have never been able to actually ride down due to parked vehicles blocking the lanes.)
+
+This is a manageable, if not preventable issue. The Department of Transportation reported that installing the ABLE system on bus lines increased bus route speeds and ridership; they are working to expand the system to cover over 85% of all NYC bus routes. Creating an analogous system for bike lanes would increase safety for bike commuters and anyone else who cycles in the city.
 
 ### Possible Next Steps
 
+To improve the model, the best and most important next step is to collect more data. Beyond that, there are several possible avenues to take this:
+ - Add additional classes (by adding more data), including identifying images with bikes, motorbikes, or other types of vehicles
+ - Move to object *detection* rather than just image classification to identify and locate vehicles in the image
+ - Incorporate Automatic License Plate Recognition (APLR) for automated ticketing and look into options for connecting for existing enforcement systems, like ABLE or red light/speed cameras in the city
+ - Connect my model to the Reported app to assist in its development
 
 ## For More Information
 
