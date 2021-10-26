@@ -106,9 +106,6 @@ def visualize_results(results, model, train_gen, val_gen):
     
     If model and generators are provided, print evaluation of training and validation data
     and plot confusion matricies.
-    
-    If pickle=True, pickle the training history (dictionary) for later analysis and 
-    comparison.
     '''
     # Training history
     try: 
