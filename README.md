@@ -57,12 +57,12 @@ Just over half of these images show a bike lane obstructed by a vehicle, which c
 
 Several steps were taken to prepare images for modeling. First, images collected manually (taken with a smartphone camera) had to be reoriented to ensure they were being fed into the model correctly.
 
-![unoriented images](readme_images/unoriented_images.png)
-![oriented images](readme_images/oriented_images.png)
+![before_and_after_orienting images](readme_images/orienting_images.png)
 
 Next, some images had to be cropped. Many images collected via Reported contain timestamps printed at the top of the image, which enhances the photo's value as evidence in a potential hearing. However, this creates potential data leakage and a possible confounding feature in the dataset because images with timestamps will be overrepresented in the target class. Without removing this feature, it's possible that the model will use it to predict the target class, rather than attending to real features in the image.
 
-![before_and_after_orienting images](readme_images/orienting_images.png)
+![uncropped images](readme_images/uncropped_images.png)
+![cropped images](readme_images/cropped_images.png)
 
 Many images were deemed unsuitable for training and were removed entirely from the dataset. Images were generally removed that:
  - did not show both lane lines of a bike lane (lines too faint or photo taken too "close up" to a vehicle)
