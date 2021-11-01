@@ -154,7 +154,7 @@ To improve the model, the best and most important next step is to collect more d
 
 ## For More Information
 
-See the full analysis in the [Jupyter Notebook](nyc_bike_lanes.ipynb) or review this [presentation](nyc_bike_lanes_presentation.pdf). The full image dataset, as well as trained models, are available by request.
+See the full analysis in the [Jupyter Notebook](nyc_bike_lanes.ipynb), review this [presentation deck](nyc_bike_lanes_presentation.pdf), or watch the [video](https://www.youtube.com/watch?v=-opfC_bEyGc) of my presentation. The full image dataset, as well as trained models, are available by request.
 
 ### Structure of Repository:
 
